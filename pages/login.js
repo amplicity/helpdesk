@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Magic } from 'magic-sdk';
 import 'react-phone-number-input/style.css'
-import PhoneInput from 'react-phone-number-input'
 import UserContext from '../contexts/UserContext';
 import { useRouter } from 'next/router';
 
 function Login(props){
 	const router = useRouter();
-	const [phone, setPhone] = useState('');
+	const [email, setEmail] = useState('');
 	const userContext = useContext(UserContext);
 	const [formSubmitted, setFormSubmitted] = useState(false);
 
@@ -17,8 +16,8 @@ function Login(props){
 		console.log('process.env.NEXT_PUBLIC_MAGIC_PUBLIC_KEY', process.env.NEXT_PUBLIC_MAGIC_PUBLIC_KEY)
 
 		let magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLIC_KEY);
-		await magic.auth.loginWithSMS({
-			phoneNumber: phone
+		await magic.auth.loginWithEmailOTP({
+			email: email
 		});
 		let didToken = await magic.user.getIdToken();
 		// Validate didToken with server
@@ -40,7 +39,7 @@ function Login(props){
 		}
 	}
 	const submitDisabled = () => {
-		if(!phone || phone.length < 10){
+		if(!email || email.length < 10){
 			return true;
 		}
 		else{
@@ -48,19 +47,18 @@ function Login(props){
 		}
 	}
 
+	const handleEmailOnChange = (e) => {
+		setEmail(e.target.value);
+	}
+
 
 	return (
 		<div className="mx-auto max-w-md px-4 pt-8 sm:max-w-2xl sm:px-6 text-center relative">
 			<div className="text-left text-xl">Enter your email:</div>
+			
 			<form onSubmit={handleLogin} className="mt-4 ml-2 mr-2">
-				<PhoneInput
-					className='rounded-xl'
-					placeholder="1 234 567 8900"
-					value={phone}
-					onChange={setPhone}
-					defaultCountry="US" />
+				<input onChange={handleEmailOnChange} type="email" name="email" required="required" placeholder="my@email.com" className="rounded-xl w-full p-4" />
 				<div className={`text-center relative mt-8`}>
-
 					<button type="submit" disabled={submitDisabled()} className={` z-90 bg-slate-500 text-white font-bold py-2 px-4 rounded hover:cursor-pointer`}>
 						{!formSubmitted && 
 							<span className="">Login</span>
