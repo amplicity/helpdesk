@@ -1,8 +1,7 @@
 import { magic } from '../../modules/MagicAdmin';
 import jwt from 'jsonwebtoken';
 import { setTokenCookie } from '../../modules/Cookie';
-import { getOrCreateUserByPhone } from '../../db';
-import { json } from 'next';
+import { getOrCreateUserByEmail } from '../../db';
 
 /**
  * Use Magic to validate the DID token sent in the Autorization header
@@ -27,15 +26,9 @@ export default async function login(req, res) {
     );
 
     setTokenCookie(res, token);
-    // let lat;
-    // let long;
-    // if (req.body.lat && req.body.long) {
-    //   lat = parseFloat(req.body.lat);
-    //   long = parseFloat(req.body.long);
-    // }
 
-    let miniUser = await getOrCreateUserByPhone(metadata.phoneNumber)
-    res.status(200).send({ user: metadata, miniUser: miniUser });
+    let helpUser = await getOrCreateUserByEmail(metadata.email)
+    res.status(200).send({ user: metadata, helpUser: helpUser });
   } catch (error) {
     console.log(error);
     res.status(500).end();

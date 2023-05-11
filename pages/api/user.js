@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { setTokenCookie } from '../../modules/Cookie';
-import { getOrCreateUserByPhone } from '../../db';
+import { getOrCreateUserByEmail } from '../../db';
 
 export default async function user(req, res) {
   try {
@@ -19,7 +19,7 @@ export default async function user(req, res) {
     );
 
     setTokenCookie(res, newToken);
-    let miniUser = await getOrCreateUserByPhone(user.phoneNumber);
+    let miniUser = await getOrCreateUserByEmail(user.email);
 
     res.status(200).json({ user:user , miniUser: miniUser });
   } catch (error) {

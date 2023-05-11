@@ -10,14 +10,14 @@ if (process.env.NODE_ENV === "production") {
 	prisma = global.prisma;
 }
 
-export async function getOrCreateUserByPhone(phone) {
+export async function getOrCreateUserByEmail(email) {
 	const user = await prisma.user.upsert({
-		where: { phone: phone },
+		where: { email: email },
 		update: {
-			phone: phone,
+			email: email,
 		},
-		create: { phone: phone },
-		include: { Namespaces: true },
+		create: { email: email },
+		include: { Tickets: true },
 	});
 	return user;
 }
