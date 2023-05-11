@@ -1,19 +1,3 @@
-/*
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-	// ...
-	plugins: [
-	  // ...
-	  require('@tailwindcss/forms'),
-	],
-  }
-  ```
-*/
 import { Fragment, useEffect, useState, useContext } from 'react'
 import ReactModal from 'react-modal'
 import { Dialog, Menu, Transition } from '@headlessui/react'
@@ -31,23 +15,22 @@ import {
 } from '@heroicons/react/outline'
 import { SearchIcon } from '@heroicons/react/solid'
 import UserContext from '../contexts/UserContext';
-import Dropzone from '../components/Dropzone'
+import { Magic } from 'magic-sdk';
+import { useRouter } from 'next/router';
 
-const navigation = [
-	{ name: 'My Files', href: '#', icon: FolderIcon, current: true },
-	{ name: 'Upload', href: '#', icon: UploadIcon, current: false },
-]
-const userNavigation = [
-	{ name: 'Your Profile', href: '#' },
-	{ name: 'Settings', href: '#' },
-	{ name: 'Sign out', href: '#' },
-]
+export default function Dashboard() {
+	const navigation = [
+		{ name: 'My Files', href: '#', icon: FolderIcon, current: true },
+		{ name: 'Upload', href: '#', icon: UploadIcon, current: false },
+	]
+	function classNames(...classes) {
+		return classes.filter(Boolean).join(' ')
+	}
 
-function classNames(...classes) {
-	return classes.filter(Boolean).join(' ')
-}
-
-export default function Example() {
+	const userNavigation = [
+		{ name: 'Sign out', href: '#', onClick:() => { logout() } },
+	]
+	
 	const [sidebarOpen, setSidebarOpen] = useState(false)
 	const [namespaces, setNamespaces] = useState([]);
 	const userContext = useContext(UserContext);
@@ -57,49 +40,16 @@ export default function Example() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [namespaceName, setNamespaceName] = useState('');
 	const [files, setFiles] = useState([]);
+	const router = useRouter();
 
-	const filterIgnoredFiles = (files) => {
-		return files.filter((file) => {
-			const parts = file.path.split('/');
-			console.log('parts', parts);
-			const hasDotPrefix = parts.some((part) => part.startsWith('.'));
-			const isInNodeModules = parts.includes('node_modules');
-			const isImage = parts.some((part) => part.endsWith('.png') || part.endsWith('.jpg') || part.endsWith('.jpeg') || part.endsWith('.gif') || part.endsWith('.svg'));
-			return !hasDotPrefix && !isInNodeModules && !isImage;
-		});
-	};
-
-	const handleDrop = (acceptedFiles) => {
-		const filteredFiles = filterIgnoredFiles(acceptedFiles);
-		setFiles([...filteredFiles]);
-		console.log('files', ...filteredFiles)
-		setIsModalOpen(true);
-	};
-
-	const handleModalSubmit = async () => {
-		setIsModalOpen(false);
-		// Upload the files and send the namespaceName
-		await uploadFiles(namespaceName);
-	};
-
-	const uploadFiles = async (namespaceName) => {
-		const formData = new FormData();
-		files.forEach((file) => {
-			formData.append('files', file);
-		});
-
-		formData.append('namespaceName', namespaceName);
-		console.log('formData', formData)
-		const response = await fetch('/api/upload', {
-			method: 'POST',
-			body: formData
-		});
-		const data = await response.json();
-	};
-
-	const handleNamespaceNameChange = (e) => {
-		setNamespaceName(e.target.value);
-	};
+	// TODO: move to AuthService
+	const logout = async () => {
+		console.log('attempting to logout')
+		const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLIC_KEY);
+		await magic.user.logout();
+		console.log('logged out?')
+		router.push('/');
+	}
 
 	useEffect(() => {
 		if (userContext.miniUser.Namespaces) {
@@ -192,6 +142,7 @@ export default function Example() {
 											<a
 												key={item.name}
 												href={item.href}
+												onClick={item.onClick}
 												className={classNames(
 													item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
 													'group flex items-center px-2 py-2 text-base font-medium rounded-md'
@@ -223,7 +174,7 @@ export default function Example() {
 					<div className="flex-1 flex flex-col min-h-0 bg-gray-800">
 						<div className="flex items-center h-16 flex-shrink-0 px-4 bg-gray-900">
 							<div style={{ fontFamily: 'candy' }} className="text-6xl">
-								<span className="text-white opacity-50">miniDev</span>
+								<span className="text-white opacity-50">My Helpdesk</span>
 							</div>
 						</div>
 						<div className="flex-1 flex flex-col overflow-y-auto">
@@ -316,6 +267,7 @@ export default function Example() {
 												<Menu.Item key={item.name}>
 													{({ active }) => (
 														<a
+															onClick={item.onClick}
 															href={item.href}
 															className={classNames(
 																active ? 'bg-gray-100' : '',
@@ -343,28 +295,7 @@ export default function Example() {
 								<div className="flex flex-col ">
 
 									{/* Replace with your content */}
-									{!isModalOpen &&
-										<div>
-											<div className="text-xl  text-gray-500">No files uploaded.</div>
-
-											<Dropzone onDrop={handleDrop} />
-										</div>
-
-									}
-									{isModalOpen &&
-										<div className="text-center mx-auto">
-											<form onSubmit={handleModalSubmit}>
-												<label>What do you want to call this project?</label><br></br><br></br>
-												<input pattern="[A-Za-z0-9\-]*" className="rounded-xl" type="text" value={namespaceName} onChange={handleNamespaceNameChange} />
-												<br></br>
-												<small>Only letters, numbers, and dashes. IE 'my-fun-project'</small>
-												<br></br><br></br>
-												<button type="submit" disabled={namespaceFormDisabled()} className={` z-90 bg-sky-800 text-white font-bold py-2 px-4 rounded hover:cursor-pointer}`}>Submit</button>
-											</form>
-
-										</div>
-
-									}
+									tickets...
 								</div>
 
 
