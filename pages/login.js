@@ -4,11 +4,12 @@ import 'react-phone-number-input/style.css'
 import UserContext from '../contexts/UserContext';
 import { useRouter } from 'next/router';
 
-function Login(props){
+function Login(props) {
 	const router = useRouter();
 	const [email, setEmail] = useState('');
 	const userContext = useContext(UserContext);
 	const [formSubmitted, setFormSubmitted] = useState(false);
+	const [isAdmin, setIsAdmin] = useState(false);
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
@@ -27,7 +28,7 @@ function Login(props){
 				Authorization: 'Bearer ' + didToken,
 			},
 			body: JSON.stringify({
-				
+				isAdmin: isAdmin
 			})
 		});
 		if (response.ok) {
@@ -39,10 +40,10 @@ function Login(props){
 		}
 	}
 	const submitDisabled = () => {
-		if(!email || email.length < 10){
+		if (!email || email.length < 10) {
 			return true;
 		}
-		else{
+		else {
 			return false;
 		}
 	}
@@ -51,19 +52,30 @@ function Login(props){
 		setEmail(e.target.value);
 	}
 
+	const handleRoleChange = (e) => {
+		setIsAdmin(e.target.value === 'admin');
+	};
+
 
 	return (
 		<div className="mx-auto max-w-md px-4 pt-8 sm:max-w-2xl sm:px-6 text-center relative">
 			<div className="text-left text-xl">Enter your email:</div>
-			
+
 			<form onSubmit={handleLogin} className="mt-4 ml-2 mr-2">
 				<input onChange={handleEmailOnChange} type="email" name="email" required="required" placeholder="my@email.com" className="rounded-xl w-full p-4" />
+				<div className="mt-4 text-left">
+					<label className="mr-2 text-xl">Select your role:</label><br></br>
+					<select id="role" onChange={handleRoleChange} className="rounded-xl p-2 mt-4 w-24">
+						<option value="user">User</option>
+						<option value="admin">Admin</option>
+					</select>
+				</div>
 				<div className={`text-center relative mt-8`}>
 					<button type="submit" disabled={submitDisabled()} className={` z-90 bg-slate-500 text-white font-bold py-2 px-4 rounded hover:cursor-pointer`}>
-						{!formSubmitted && 
+						{!formSubmitted &&
 							<span className="">Login</span>
 						}
-						{formSubmitted && 
+						{formSubmitted &&
 							<span className="">Logging in, please wait..</span>
 						}
 					</button>
