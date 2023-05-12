@@ -12,6 +12,8 @@ import {
 	UploadIcon,
 	UsersIcon,
 	XIcon,
+	PlusIcon,
+	TicketIcon
 } from '@heroicons/react/outline'
 import { SearchIcon } from '@heroicons/react/solid'
 import UserContext from '../contexts/UserContext';
@@ -20,8 +22,8 @@ import { useRouter } from 'next/router';
 
 export default function Dashboard() {
 	const navigation = [
-		{ name: 'My Files', href: '#', icon: FolderIcon, current: true },
-		{ name: 'Upload', href: '#', icon: UploadIcon, current: false },
+		{ name: 'My Tickets', href: '#', icon: TicketIcon, current: true },
+		{ name: 'Create Ticket', href: '#', icon: PlusIcon, current: false },
 	]
 	function classNames(...classes) {
 		return classes.filter(Boolean).join(' ')
@@ -30,12 +32,11 @@ export default function Dashboard() {
 	const userNavigation = [
 		{ name: 'Sign out', href: '#', onClick:() => { logout() } },
 	]
-	
+	const userContext = useContext(UserContext);
 	const [sidebarOpen, setSidebarOpen] = useState(false)
 	const [namespaces, setNamespaces] = useState([]);
-	const userContext = useContext(UserContext);
-	const [miniUser, setMiniUser] = useState({
-		Namespaces: []
+	const [helpUser, setHelpUser] = useState({
+		tickets: [],
 	});
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [namespaceName, setNamespaceName] = useState('');
@@ -47,44 +48,19 @@ export default function Dashboard() {
 		console.log('attempting to logout')
 		const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLIC_KEY);
 		await magic.user.logout();
-		console.log('logged out?')
 		router.push('/');
 	}
 
 	useEffect(() => {
-		if (userContext.miniUser.Namespaces) {
-			setMiniUser(userContext.miniUser);
+		console.log('userContext', userContext);
+		if (userContext.helpUser.tickets){
+			setHelpUser(userContext.helpUser);
 		}
-	}, [userContext.miniUser]);
+	}, [userContext, userContext.helpUser]);
 
-	const namespaceFormDisabled = () => {
-		if (namespaceName == ''){
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-
-	// useEffect(() => {
-	// 	async function getNamespaces() {
-	// 		const response = await fetch('/api/getNamespaces');
-	// 		const data = await response.json();
-	// 		setNamespaces(data.namespaces);
-	// 	}
-	// 	getNamespaces();
-	// }, []);
 
 	return (
 		<>
-			{/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-100">
-        <body class="h-full">
-        ```
-      */}
 			<div>
 				<Transition.Root show={sidebarOpen} as={Fragment}>
 					<Dialog as="div" className="fixed inset-0 flex z-40 md:hidden" onClose={setSidebarOpen}>
@@ -174,7 +150,7 @@ export default function Dashboard() {
 					<div className="flex-1 flex flex-col min-h-0 bg-gray-800">
 						<div className="flex items-center h-16 flex-shrink-0 px-4 bg-gray-900">
 							<div style={{ fontFamily: 'candy' }} className="text-6xl">
-								<span className="text-white opacity-50">My Helpdesk</span>
+								<span className="text-white opacity-50"></span>
 							</div>
 						</div>
 						<div className="flex-1 flex flex-col overflow-y-auto">
@@ -214,7 +190,8 @@ export default function Dashboard() {
 						</button>
 						<div className="flex-1 px-4 flex justify-between">
 							<div className="flex-1 flex">
-								<form className="w-full flex md:ml-0" action="#" method="GET">
+								{/* TODO: Search -- uncomment and add feature if I have time */}
+								{/* <form className="w-full flex md:ml-0" action="#" method="GET">
 									<label htmlFor="search-field" className="sr-only">
 										Search
 									</label>
@@ -230,17 +207,9 @@ export default function Dashboard() {
 											name="search"
 										/>
 									</div>
-								</form>
+								</form> */}
 							</div>
 							<div className="ml-4 flex items-center md:ml-6">
-								<button
-									type="button"
-									className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-								>
-									<span className="sr-only">View notifications</span>
-									<BellIcon className="h-6 w-6" aria-hidden="true" />
-								</button>
-
 								{/* Profile dropdown */}
 								<Menu as="div" className="ml-3 relative">
 									<div>

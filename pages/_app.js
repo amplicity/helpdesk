@@ -11,8 +11,8 @@ import BreathingCircles from '../components/BreathingCircles';
 
 function App({ Component, pageProps }) {
 	const [user, setUser] = useState({});
-	const [miniUser, setMiniUser] = useState({});
-	const userContextProvider = { user, setUser, miniUser, setMiniUser };
+	const [helpUser, setHelpUser] = useState({});
+	const userContextProvider = { user, setUser, helpUser, setHelpUser };
 	const router = useRouter();
 	const [toast, setToast] = useState({ visible: false, message: '' });
 	const toastContextProvider = { toast, setToast };
@@ -29,7 +29,7 @@ function App({ Component, pageProps }) {
 				const responseData = await AuthService.identifyUser();
 				if (responseData.user) {
 					setUser(responseData.user);
-					setMiniUser(responseData.miniUser);
+					setHelpUser(responseData.helpUser);
 				} else {
 					console.log('No user identified', responseData);
 					setUser({ user: null });

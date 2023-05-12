@@ -12,18 +12,19 @@ datasource db {
 
 model User {
   id                   Int         @id @default(autoincrement())
-  email                String?     @unique
+  email                String     @unique
   createdAt            DateTime    @default(now())
   updatedAt            DateTime    @updatedAt
   admin                Boolean     @default(false)
-  Tickets           Ticket[]
+  tickets           Ticket[]
+  name                String?
 }
 
 model Ticket {
   id Int @id @default(autoincrement())
   name String
   text String
-  UserId Int
+  userId Int
   status Int
-  User   User @relation(fields: [UserId], references: [id])
+  user   User @relation(fields: [userId], references: [id])
 }

@@ -10,6 +10,7 @@ function Login(props) {
 	const userContext = useContext(UserContext);
 	const [formSubmitted, setFormSubmitted] = useState(false);
 	const [isAdmin, setIsAdmin] = useState(false);
+	const [name, setName] = useState('');
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
@@ -28,13 +29,14 @@ function Login(props) {
 				Authorization: 'Bearer ' + didToken,
 			},
 			body: JSON.stringify({
-				isAdmin: isAdmin
+				isAdmin: isAdmin,
+				name: name
 			})
 		});
 		if (response.ok) {
 			let data = await response.json();
 			userContext.setUser(data.user);
-			userContext.setMiniUser(data.miniUser)
+			userContext.setHelpUser(data.helpUser)
 			console.log('data', data);
 			router.push('/dashboard');
 		}
@@ -52,26 +54,35 @@ function Login(props) {
 		setEmail(e.target.value);
 	}
 
-	const handleRoleChange = (e) => {
+	const handleNameOnChange = (e) => {
+		setName(e.target.value);
+	}
+
+	const handleRoleOnChange = (e) => {
 		setIsAdmin(e.target.value === 'admin');
 	};
 
 
 	return (
 		<div className="mx-auto max-w-md px-4 pt-8 sm:max-w-2xl sm:px-6 text-center relative">
-			<div className="text-left text-xl">Enter your email:</div>
 
 			<form onSubmit={handleLogin} className="mt-4 ml-2 mr-2">
+				<div className="text-left text-xl">Enter your email:</div>
+
 				<input onChange={handleEmailOnChange} type="email" name="email" required="required" placeholder="my@email.com" className="rounded-xl w-full p-4" />
+				
+				<div className="text-left text-xl mt-4">Enter your name:</div>
+
+				<input onChange={handleNameOnChange} type="text" name="name" required="required" placeholder="Mae Brown" className="rounded-xl w-full p-4" />
 				<div className="mt-4 text-left">
 					<label className="mr-2 text-xl">Select your role:</label><br></br>
-					<select id="role" onChange={handleRoleChange} className="rounded-xl p-2 mt-4 w-24">
+					<select id="role" onChange={handleRoleOnChange} className="rounded-xl p-2 w-24">
 						<option value="user">User</option>
 						<option value="admin">Admin</option>
 					</select>
 				</div>
 				<div className={`text-center relative mt-8`}>
-					<button type="submit" disabled={submitDisabled()} className={` z-90 bg-slate-500 text-white font-bold py-2 px-4 rounded hover:cursor-pointer`}>
+					<button type="submit" disabled={submitDisabled()} className={` z-90 bg-slate-500 text-white font-bold py-2 px-4 rounded`}>
 						{!formSubmitted &&
 							<span className="">Login</span>
 						}

@@ -19,9 +19,9 @@ export default async function user(req, res) {
     );
 
     setTokenCookie(res, newToken);
-    let miniUser = await getOrCreateUserByEmail(user.email);
+    let helpUser = await getOrCreateUserByEmail(user);
 
-    res.status(200).json({ user:user , miniUser: miniUser });
+    res.status(200).json({ user:user , helpUser: helpUser });
   } catch (error) {
     console.error('error', error);
     res.status(200).json({ user: null });

@@ -10,17 +10,8 @@ if (process.env.NODE_ENV === "production") {
 	prisma = global.prisma;
 }
 
-export async function getOrCreateUserByEmail(email) {
-	const user = await prisma.user.upsert({
-		where: { email: email },
-		update: {
-			email: email,
-		},
-		create: { email: email },
-		include: { Tickets: true },
-	});
-	return user;
-}
+
+
 
 export async function updateUser(phone) {
 	const data = {};
@@ -33,26 +24,38 @@ export async function updateUser(phone) {
 	return user;
 }
 
-export async function createOrUpdateNamespace(namespaceName, userId) {
-	const namespace = await prisma.namespace.upsert({
-		where: {
-			name: namespaceName,
-		},
-		update: {
-			name: namespaceName,
-			UserId: userId,
-		},
-		create: {
-			name: namespaceName,
-			User: {
-				connect: {
-					id: userId,
-				},
-			},
-		},
-		include: {
-			User: true,
-		},
+export async function getOrCreateUserByEmail(u, body) {
+	let isAdmin;
+	let name;
+
+	if (body) {
+		body = JSON.parse(body);
+		isAdmin = body.isAdmin;
+		name = body.name;
+	}
+
+	const updateData = {
+		email: u.email,
+		...(isAdmin !== undefined && { admin: isAdmin }),
+	};
+
+	if (name !== undefined) {
+		updateData.name = name;
+	}
+
+	const createData = {
+		email: u.email,
+		...(isAdmin !== undefined && { admin: isAdmin }),
+		...(name !== undefined && { name: name }),
+	};
+
+	const user = await prisma.user.upsert({
+		where: { email: u.email },
+		update: updateData,
+		create: createData,
+		include: { tickets: true },
 	});
-	return namespace;
+
+	return user;
 }
+
