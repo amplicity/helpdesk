@@ -13,18 +13,22 @@ import {
 	UsersIcon,
 	XIcon,
 	PlusIcon,
-	TicketIcon
+	TicketIcon,
 } from '@heroicons/react/outline'
 import { SearchIcon } from '@heroicons/react/solid'
 import UserContext from '../contexts/UserContext';
 import { Magic } from 'magic-sdk';
 import { useRouter } from 'next/router';
+import CreateTicket from '../components/CreateTicket';
 
 export default function Dashboard() {
+	const [create, setCreate] = useState(false);
 	const navigation = [
-		{ name: 'My Tickets', href: '#', icon: TicketIcon, current: true },
-		{ name: 'Create Ticket', href: '#', icon: PlusIcon, current: false },
+		{ name: 'My Tickets', href: '#', onClick:() => setCreate(false), icon: TicketIcon, current: !create },
+		{ name: 'Create Ticket', href: '#', onClick: () => setCreate(true), icon: PlusIcon, current: create },
+		{ name: 'Settings', href: '#', icon: PlusIcon, current: false },
 	]
+	
 	function classNames(...classes) {
 		return classes.filter(Boolean).join(' ')
 	}
@@ -159,6 +163,7 @@ export default function Dashboard() {
 									<a
 										key={item.name}
 										href={item.href}
+										onClick={item.onClick}
 										className={classNames(
 											item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
 											'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
@@ -256,21 +261,9 @@ export default function Dashboard() {
 					</div>
 
 					<main className="flex-1 min-h-screen">
-						<div className="py-6">
-							<div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-								<h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>
-							</div>
-							<div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-								<div className="flex flex-col ">
-
-									{/* Replace with your content */}
-									tickets...
-								</div>
-
-
-								{/* /End replace */}
-							</div>
-						</div>
+						{create && <CreateTicket />}
+						{/* {!create && <Tickets />} */}
+							
 					</main>
 				</div>
 			</div>

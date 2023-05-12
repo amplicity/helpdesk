@@ -24,6 +24,40 @@ export async function updateUser(phone) {
 	return user;
 }
 
+export async function createTicket(u, body) {
+	const newTicketStatus = 0;
+	const data = {
+		description: body.description,
+		user: { connect: { email: u.email } },
+		status: newTicketStatus
+	};
+	console.log('data', data);
+
+	const ticket = await prisma.ticket.create({
+		data: data,
+	});
+
+	return ticket;
+
+}
+
+export async function createMessage(u, ticketId, body) {
+	const data = {
+		text: body.text,
+		ticket: { connect: { id: ticketId } }, // Connect the message with a ticket
+		user: { connect: { email: u.email } }, // Connect the message with a user
+	};
+	console.log('dataaa', data);
+
+
+	const message = await prisma.message.create({
+		data: data,
+	});
+
+	return message;
+}
+
+
 export async function getOrCreateUserByEmail(u, body) {
 	let isAdmin;
 	let name;
