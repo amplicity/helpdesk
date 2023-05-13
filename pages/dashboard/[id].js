@@ -47,7 +47,7 @@ export default function TicketMessages() {
 	}, [router.query.id]);
 
 	const handleTextOnChange = (e) => {
-		setText(e.target.value);
+		setText(e.target.value || '');
 	}
 
 	const handleStatusOnChange = async (e) => {
@@ -59,6 +59,7 @@ export default function TicketMessages() {
 			...prevHelpUser,
 			tickets: updatedTickets,
 		}));
+		
 		const response = await fetch('/api/tickets/update', {
 			method: 'POST',
 			headers: {
@@ -69,6 +70,8 @@ export default function TicketMessages() {
 				ticketId: ticket.id
 			}),
 		});
+		console.log(`📧 Send email to ${ticket.user.email} about ticket id ${ticket.id}, the status was updatd to ${TicketService.getStatus(parseInt(e.target.value))}` )
+
 	}
 
 	const submitText = async (e) => {
@@ -93,10 +96,10 @@ export default function TicketMessages() {
 				}));
 				setText('');
 				if (TicketService.isAdmin(userContext.helpUser)) {
-					console.log(`📧 Send email to ${ticket.user.email} for reply made to ticket id: ${ticket.id}` )
+					console.log(`📧 Send email to ${ticket.user.email} for reply made to ticket id: ${ticket.id} - ${data.message.text}` )
 				}
 				if (!TicketService.isAdmin(userContext.helpUser)){
-					console.log(`📧 Send email to support admins for reply made to ticket id: ${ticket.id}` )
+					console.log(`📧 Send email to support admins for reply made to ticket id: ${ticket.id} - ${data.message.text}` )
 				}
 			}
 		}
@@ -112,7 +115,7 @@ export default function TicketMessages() {
 							<h2 className="text-xl text-gray-900">{ticket.user.name}</h2>
 							<h2 className="text-xl text-gray-900">{ticket.user.email}</h2>
 							{TicketService.isAdmin(userContext.helpUser) && (
-								<select id="status" value={status} onChange={handleStatusOnChange} className="rounded-xl p-2 w-24" disabled={!TicketService.isAdmin(userContext.helpUser)}>
+								<select id="status" value={status || 0} onChange={handleStatusOnChange} className="rounded-xl p-2 w-24" disabled={!TicketService.isAdmin(userContext.helpUser)}>
 									<option value="0">New</option>
 									<option value="1">In Progress</option>
 									<option value="2">Resolved</option>
@@ -149,7 +152,7 @@ export default function TicketMessages() {
 
 									<input
 										onChange={handleTextOnChange}
-										value={text}
+										value={text || ''}
 										type="text"
 										name="text"
 										required="required"

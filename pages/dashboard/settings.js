@@ -12,8 +12,8 @@ export default function Settings() {
 
 	useEffect(() => {
 		if (userContext.helpUser) {
-			setIsAdmin(userContext.helpUser.admin);
-			setName(userContext.helpUser.name);
+			setIsAdmin(userContext.helpUser.admin || false);
+			setName(userContext.helpUser.name || '');
 		}
 	}, [userContext.helpUser]);
 
@@ -58,7 +58,7 @@ export default function Settings() {
 
 				<div className="text-left text-xl mt-4">
 					<label>Enter your name:</label>
-					<input onChange={handleNameOnChange} value={name} type="text" name="name" required="required" placeholder="Mae Brown" className="rounded-xl w-full p-4" />
+					<input onChange={handleNameOnChange} value={name || ''} type="text" name="name" required="required" placeholder="Mae Brown" className="rounded-xl w-full p-4" />
 				</div>
 				<div className="mt-4 text-left">
 					<label className="mr-2 relative inline-flex items-center cursor-pointer">
@@ -70,7 +70,6 @@ export default function Settings() {
 				<button type="submit" disabled={submitDisabled()} className={` mt-4 z-90 bg-slate-500 text-white font-bold py-2 px-4 rounded`}>
 					Save Changes
 				</button>
-
 			</form>
 		</DashboardLayout>
 	);

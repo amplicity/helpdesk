@@ -4,9 +4,7 @@ import UserContext from '../contexts/UserContext';
 import ToastContext from '../contexts/ToastContext';
 import AuthService from '../modules/AuthService';
 import React, { useState, useEffect, createContext } from 'react';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
-import BreathingCircles from '../components/BreathingCircles';
 
 
 function App({ Component, pageProps }) {

@@ -26,7 +26,7 @@ const TicketService = {
 	isAdmin: function(helpUser) {
 		if (helpUser === undefined) return false;
 		return helpUser.admin === true;
-	}
+	},
 };
 
 export default TicketService;

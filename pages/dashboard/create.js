@@ -58,7 +58,7 @@ export default function Create() {
 						<form onSubmit={handleTicketOnSubmit}>
 							<div className="mt-4">
 								<label htmlFor="description" className="block text-sm font-medium text-gray-700">
-									Description
+									Subject
 								</label>
 								<input
 									type="text"
@@ -69,7 +69,7 @@ export default function Create() {
 							</div>
 							<div className="mt-4">
 								<label htmlFor="text" className="block text-sm font-medium text-gray-700">
-									Text
+									Description
 								</label>
 								<textarea
 									name="text"
