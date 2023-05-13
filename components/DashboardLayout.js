@@ -1,12 +1,6 @@
 import { Fragment, useEffect, useState, useContext } from 'react'
 import { Dialog, Menu, Transition } from '@headlessui/react'
 import {
-	BellIcon,
-	CalendarIcon,
-	ChartBarIcon,
-	FolderIcon,
-	HomeIcon,
-	InboxIcon,
 	MenuAlt2Icon,
 	XIcon,
 	PlusIcon,
@@ -14,10 +8,9 @@ import {
 	CogIcon,
 	UserCircleIcon
 } from '@heroicons/react/outline'
-import { SearchIcon } from '@heroicons/react/solid'
 import UserContext from '../contexts/UserContext';
-import { Magic } from 'magic-sdk';
 import { useRouter } from 'next/router';
+import AuthService from '../modules/AuthService';
 
 export default function DashboardLayout({ children }) {
 	const router = useRouter();
@@ -51,20 +44,12 @@ export default function DashboardLayout({ children }) {
 
 	const userNavigation = [
 		{ name: `${userContext.user.email}` },
-		{ name: 'Sign out', href: '#', onClick: () => { logout() } },
+		{ name: 'Sign out', onClick: () => { AuthService.logout(router) } },
 	]
 	const [sidebarOpen, setSidebarOpen] = useState(false)
 	const [helpUser, setHelpUser] = useState({
 		tickets: [],
 	});
-
-	// TODO: move to AuthService
-	const logout = async () => {
-		console.log('attempting to logout')
-		const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLIC_KEY);
-		await magic.user.logout();
-		router.push('/');
-	}
 
 	useEffect(() => {
 		if (userContext.helpUser.tickets) {

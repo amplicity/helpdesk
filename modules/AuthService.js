@@ -1,3 +1,5 @@
+import { Magic } from 'magic-sdk';
+import { useRouter } from 'next/router';
 
 const AuthService = {
 	identifyUser: async function() {
@@ -13,6 +15,11 @@ const AuthService = {
 		} else{
 			return false;
 		}
+	},
+	logout: async function(router) {
+		const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLIC_KEY);
+		await magic.user.logout();
+		router.push('/');
 	}
 };
 
