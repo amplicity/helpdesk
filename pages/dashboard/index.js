@@ -10,11 +10,13 @@ export default function Tickets() {
 	const [tickets, setTickets] = useState([]);
 
 	useEffect(() => {
-		if (userContext.helpUser.tickets) {
-			setTickets(userContext.helpUser.tickets);
-		}
 		if (!userContext.helpUser.name) {
 			router.push('/dashboard/settings');
+		}
+		if (userContext.helpUser.tickets) {
+			setTickets(userContext.helpUser.tickets);
+		} else {
+			router.push('/dashboard/create');
 		}
 	}, [router, userContext.helpUser]);
 

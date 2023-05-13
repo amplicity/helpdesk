@@ -27,7 +27,18 @@ export async function updateUser(u, body) {
 	const user = await prisma.user.update({
 		where: { email: u.email },
 		data: data,
+		include : {
+			tickets: true
+		}
 	});
+	if(user.admin){
+		const allTickets = await prisma.ticket.findMany({
+			include: {
+				user: true
+			}
+		});
+		user.tickets = allTickets;
+	}
 
 	return user;
 }
@@ -150,6 +161,15 @@ export async function getOrCreateUserByEmail(u, body) {
 		create: createData,
 		include: { tickets: true },
 	});
+
+	if(user.admin){
+		const allTickets = await prisma.ticket.findMany({
+			include: {
+				user: true
+			}
+		});
+		user.tickets = allTickets;
+	}
 
 	return user;
 }

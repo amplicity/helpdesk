@@ -44,7 +44,8 @@ export default function Settings() {
 			const updatedUser = {
 				...userContext.helpUser,
 				admin: data.updatedUser.admin,
-				name: data.updatedUser.name
+				name: data.updatedUser.name,
+				tickets: data.updatedUser.tickets
 			};
 			userContext.setHelpUser(updatedUser);
 			console.log('updatedUser', updatedUser);

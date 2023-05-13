@@ -69,7 +69,6 @@ export default function DashboardLayout({ children }) {
 	}
 
 	useEffect(() => {
-		console.log('userContext', userContext);
 		if (userContext.helpUser.tickets) {
 			setHelpUser(userContext.helpUser);
 		}

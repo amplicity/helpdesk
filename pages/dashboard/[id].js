@@ -11,13 +11,15 @@ export default function TicketMessages() {
 	const userContext = useContext(UserContext);
 	const router = useRouter();
 	const [ticket, setTicket] = useState({
-		id: undefined,
+		id: 0,
 		messages: [],
 		user: {
 			email: '',
+			status:0
 		},
 	});
 	const [text, setText] = useState('');
+	const [status, setStatus] = useState('');
 
 	useEffect(() => {
 		async function fetchMessages() {
@@ -36,7 +38,11 @@ export default function TicketMessages() {
 				if (response.ok) {
 					const data = await response.json();
 					console.log('data.ticket', data.ticket);
-					setTicket(data.ticket);
+					if (data.ticket){
+						setTicket(data.ticket);
+						setStatus(data.ticket.status)
+					}
+
 				}
 			}
 		}
@@ -45,8 +51,11 @@ export default function TicketMessages() {
 	}, [router.query.id]);
 
 	const handleTextOnChange = (e) => {
-
 		setText(e.target.value);
+	}
+
+	const handleStatusOnChange = (e) => {
+		setStatus(e.target.value);
 	}
 
 	const submitText = async (e) => {
@@ -77,52 +86,59 @@ export default function TicketMessages() {
 	return (
 		<DashboardLayout>
 			<div className="py-6">
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-					<div className="mb-4">
-						<h1 className="text-2xl font-semibold text-gray-900">Ticket {ticket.id} - {ticket.description} </h1>
-						<h2 className="text-xl text-gray-900">{ticket.user.email}</h2>
-						<h2 className="text-xl text-gray-900">{ticket.user.name}</h2>
-
-					</div>
-
-					<div className="w-full">
-						<div className=" h-[30rem] max-h-[30rem] overflow-y-auto">
-							{ticket.messages.map((message, index) => (
-								<div key={index} className={`chat ${(!TicketService.isAdmin() && message.adminResponse) || (TicketService.isAdmin() && !message.adminResponse) ? 'chat-start' : 'chat-end'}`}>
-									<div className="chat-header">
-										{TicketService.isAdmin() && message.adminResponse && <div className="chat-header-name text-slate-500">Support</div>}
-										{!TicketService.isAdmin() && message.adminResponse && <div className="chat-header-name text-slate-500">Support</div>}
-										{TicketService.isAdmin() && message.adminResponse === false && <div className="chat-header-name text-slate-500">{ticket.user.email}</div>}
-										{!TicketService.isAdmin() && message.adminResponse === false && <div className="chat-header-name text-slate-500">You</div>}
-										<time className="text-sm opacity-50 text-slate-400">{DayJs(message.createdAt).format('MM/DD/YYYY h:mma')}</time>
-									</div>
-									<div className="chat-bubble">{message.text}</div>
-								</div>
-							))}
+				{ticket && ticket.id > 0 &&(
+					<div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+						<div className="mb-4">
+							<h1 className="text-2xl font-semibold text-gray-900">Ticket {ticket.id} - {ticket.description} </h1>
+							<h2 className="text-xl text-gray-900">{ticket.user.email}</h2>
+							<h2 className="text-xl text-gray-900">{ticket.user.name}</h2>
+							<select id="status" value={status} onChange={handleStatusOnChange} className="rounded-xl p-2 w-24" disabled={!TicketService.isAdmin(userContext.helpUser)}>
+								<option value="0">New</option>
+								<option value="1">In Progress</option>
+								<option value="2">Resolved</option>
+							</select>
 						</div>
-						<form onSubmit={submitText}>
-							<div class="relative">
 
-
-								<input
-									onChange={handleTextOnChange}
-									value={text}
-									type="text"
-									name="text"
-									required="required"
-									placeholder="Reply here..."
-									className="rounded-xl w-full p-4" />
-								{text.length > 0 && (
-									<button type="submit" className="absolute right-4 h-14 text-3xl text-slate-200">
-										<FontAwesomeIcon icon={faCircleArrowUp} />
-									</button>
-								)}
+						<div className="w-full">
+							<div className=" h-[30rem] max-h-[30rem] overflow-y-auto">
+								{ticket.messages.map((message, index) => (
+									<div key={index} className={`chat ${(!TicketService.isAdmin() && message.adminResponse) || (TicketService.isAdmin() && !message.adminResponse) ? 'chat-start' : 'chat-end'}`}>
+										<div className="chat-header">
+											{TicketService.isAdmin() && message.adminResponse && <div className="chat-header-name text-slate-500">Support</div>}
+											{!TicketService.isAdmin() && message.adminResponse && <div className="chat-header-name text-slate-500">Support</div>}
+											{TicketService.isAdmin() && message.adminResponse === false && <div className="chat-header-name text-slate-500">{ticket.user.email}</div>}
+											{!TicketService.isAdmin() && message.adminResponse === false && <div className="chat-header-name text-slate-500">You</div>}
+											<time className="text-sm opacity-50 text-slate-400">{DayJs(message.createdAt).format('MM/DD/YYYY h:mma')}</time>
+										</div>
+										<div className="chat-bubble">{message.text}</div>
+									</div>
+								))}
 							</div>
+							<form onSubmit={submitText}>
+								<div class="relative">
 
-						</form>
 
+									<input
+										onChange={handleTextOnChange}
+										value={text}
+										type="text"
+										name="text"
+										required="required"
+										placeholder="Reply here..."
+										className="rounded-xl w-full p-4" />
+									{text.length > 0 && (
+										<button type="submit" className="absolute right-4 h-14 text-3xl text-slate-200">
+											<FontAwesomeIcon icon={faCircleArrowUp} />
+										</button>
+									)}
+								</div>
+
+							</form>
+
+						</div>
 					</div>
-				</div>
+				)}
+
 			</div>
 		</DashboardLayout >
 	);

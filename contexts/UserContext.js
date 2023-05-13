@@ -3,7 +3,9 @@ import React from "react";
 const UserContext = React.createContext({
 	user: {},
 	setUser: () => {},
-	helpUser: {},
+	helpUser: {
+		tickets:[]
+	},
 	setHelpUser: () => {},
 });
 
