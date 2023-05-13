@@ -15,16 +15,15 @@ import {
 	TicketIcon,
 } from '@heroicons/react/outline'
 import { SearchIcon } from '@heroicons/react/solid'
-import UserContext from '../../contexts/UserContext';
+import UserContext from '../contexts/UserContext';
 import { Magic } from 'magic-sdk';
 import { useRouter } from 'next/router';
-import CreateTicket from '../../components/CreateTicket';
 
 export default function DashboardLayout({children}) {
 	const [create, setCreate] = useState(false);
 	const navigation = [
-		{ name: 'My Tickets', href: '#', onClick:() => setCreate(false), icon: TicketIcon, current: !create },
-		{ name: 'Create Ticket', href: '#', onClick: () => setCreate(true), icon: PlusIcon, current: create },
+		{ name: 'My Tickets', href: '#', onClick:() => router.push('/dashboard'), icon: TicketIcon, current: !create },
+		{ name: 'Create Ticket', href: '#', onClick: () => router.push('/dashboard/create'), icon: PlusIcon, current: create },
 		{ name: 'Settings', href: '#', icon: PlusIcon, current: false },
 	]
 	

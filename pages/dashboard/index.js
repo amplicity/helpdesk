@@ -1,12 +1,9 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import DashboardLayout from './layout';
+import DashboardLayout from '../../components/DashboardLayout';
 
-export default function CreateTicket() {
+export default function Tickets() {
 	const router = useRouter();
-
-
-
 	return (
 		<DashboardLayout>
 			<div className="py-6">
