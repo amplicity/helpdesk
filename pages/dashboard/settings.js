@@ -32,8 +32,24 @@ export default function Settings() {
 
 	const handleSettingsOnSubmit = async (e) => {
 		e.preventDefault();
-		console.log('name', name);
-		console.log('isAdmin', isAdmin);
+		const response = await fetch('/api/updateUser', {
+			method: 'POST',
+			body: JSON.stringify({
+				isAdmin: isAdmin,
+				name: name
+			})
+		});
+		if (response.ok) {
+			const data = await response.json();
+			const updatedUser = {
+				...userContext.helpUser,
+				admin: data.updatedUser.admin,
+				name: data.updatedUser.name
+			};
+			userContext.setHelpUser(updatedUser);
+			console.log('updatedUser', updatedUser);
+			router.push('/dashboard');
+		}
 
 	};
 	return (
@@ -63,16 +79,3 @@ export default function Settings() {
 
 
 
-		// const response = await fetch('/api/updateUser', {
-		// 	method: 'POST',
-		// 	body: JSON.stringify({
-		// 		isAdmin: isAdmin,
-		// 		name: name
-		// 	})
-		// });
-		// if (response.ok) {
-		// 	let data = await response.json();
-		// 	userContext.setUser(data.user);
-		// 	userContext.setHelpUser(data.helpUser)
-		// 	router.push('/dashboard');
-		// }
