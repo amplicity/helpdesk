@@ -19,27 +19,37 @@ import UserContext from '../contexts/UserContext';
 import { Magic } from 'magic-sdk';
 import { useRouter } from 'next/router';
 
-export default function DashboardLayout({children}) {
-	const [create, setCreate] = useState(false);
+export default function DashboardLayout({ children }) {
+	const router = useRouter();
+
+	useEffect(() => {
+		if (router.pathname === '/dashboard') {
+			setCurrent(0);
+		} else if (router.pathname === '/dashboard/create') {
+			setCurrent(1);
+		} else {
+			setCurrent(null);
+		}
+	}, [router.pathname]);
+	const [current, setCurrent] = useState(0);
 	const navigation = [
-		{ name: 'My Tickets', href: '#', onClick:() => router.push('/dashboard'), icon: TicketIcon, current: !create },
-		{ name: 'Create Ticket', href: '#', onClick: () => router.push('/dashboard/create'), icon: PlusIcon, current: create },
-		{ name: 'Settings', href: '#', icon: PlusIcon, current: false },
+		{ name: 'My Tickets', href: '#', onClick: () => router.push('/dashboard'), icon: TicketIcon, current: current === 0 },
+		{ name: 'Create Ticket', href: '#', onClick: () => router.push('/dashboard/create'), icon: PlusIcon, current: current === 1 },
+		{ name: 'Settings', href: '#', icon: PlusIcon, current: current === 3 },
 	]
-	
+
 	function classNames(...classes) {
 		return classes.filter(Boolean).join(' ')
 	}
 
 	const userNavigation = [
-		{ name: 'Sign out', href: '#', onClick:() => { logout() } },
+		{ name: 'Sign out', href: '#', onClick: () => { logout() } },
 	]
 	const userContext = useContext(UserContext);
 	const [sidebarOpen, setSidebarOpen] = useState(false)
 	const [helpUser, setHelpUser] = useState({
 		tickets: [],
 	});
-	const router = useRouter();
 
 	// TODO: move to AuthService
 	const logout = async () => {
@@ -51,7 +61,7 @@ export default function DashboardLayout({children}) {
 
 	useEffect(() => {
 		console.log('userContext', userContext);
-		if (userContext.helpUser.tickets){
+		if (userContext.helpUser.tickets) {
 			setHelpUser(userContext.helpUser);
 		}
 	}, [userContext, userContext.helpUser]);
@@ -257,7 +267,7 @@ export default function DashboardLayout({children}) {
 
 					<main className="flex-1 min-h-screen">
 						{children}
-							
+
 					</main>
 				</div>
 			</div>
