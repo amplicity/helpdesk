@@ -33,9 +33,9 @@ export default function DashboardLayout({ children }) {
 	}, [router.pathname]);
 	const [current, setCurrent] = useState(0);
 	const navigation = [
-		{ name: 'My Tickets', href: '#', onClick: () => router.push('/dashboard'), icon: TicketIcon, current: current === 0 },
-		{ name: 'Create Ticket', href: '#', onClick: () => router.push('/dashboard/create'), icon: PlusIcon, current: current === 1 },
-		{ name: 'Settings', href: '#', icon: PlusIcon, current: current === 3 },
+		{ name: 'My Tickets', onClick: () => router.push('/dashboard'), icon: TicketIcon, current: current === 0 },
+		{ name: 'Create Ticket', onClick: () => router.push('/dashboard/create'), icon: PlusIcon, current: current === 1 },
+		{ name: 'Settings', onClick:()=> router.push('/dashboard/settings'), icon: PlusIcon, current: current === 3 },
 	]
 
 	function classNames(...classes) {
@@ -130,7 +130,7 @@ export default function DashboardLayout({ children }) {
 												onClick={item.onClick}
 												className={classNames(
 													item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-													'group flex items-center px-2 py-2 text-base font-medium rounded-md'
+													'group flex items-center px-2 py-2 text-base font-medium rounded-md hover:cursor-pointer'
 												)}
 											>
 												<item.icon
