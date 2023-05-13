@@ -107,7 +107,7 @@ export default function TicketMessages() {
 
 	return (
 		<DashboardLayout>
-			<div className="py-6">
+			<div className="h-full overflow-y-auto">
 				{ticket && ticket.id > 0 && (
 					<div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
 						<div className="mb-4">
@@ -132,7 +132,7 @@ export default function TicketMessages() {
 						</div>
 
 						<div className="w-full">
-							<div className=" h-[30rem] max-h-[30rem] overflow-y-auto">
+							<div className="h-full ">
 								{ticket.messages.map((message, index) => (
 									<div key={index} className={`chat ${(!TicketService.isAdmin(userContext.helpUser) && message.adminResponse) || (TicketService.isAdmin(userContext.helpUser) && !message.adminResponse) ? 'chat-start' : 'chat-end'}`}>
 										<div className="chat-header">
@@ -157,9 +157,9 @@ export default function TicketMessages() {
 										name="text"
 										required="required"
 										placeholder="Reply here..."
-										className="rounded-xl w-full p-4" />
+										className="rounded-xl w-full p-4 mt-4" />
 									{text.length > 0 && (
-										<button type="submit" className="absolute right-4 h-14 text-3xl text-slate-200">
+										<button type="submit" className="absolute right-4 top-4 h-14 text-3xl text-slate-200">
 											<FontAwesomeIcon icon={faCircleArrowUp} />
 										</button>
 									)}

@@ -197,7 +197,6 @@ export async function sendMessage(u, body) {
 			},
 		},
 	});
-	console.log('message', message)
 
 	return message;
 }
