@@ -154,3 +154,32 @@ export async function getOrCreateUserByEmail(u, body) {
 	return user;
 }
 
+export async function sendMessage(u, body) {
+	if (body && typeof body === 'string') {
+		body = JSON.parse(body);
+	}
+	const helpUser = await prisma.user.findUnique({
+		where: {
+			email: u.email,
+		},
+	});
+	const message = await prisma.message.create({
+		data: {
+			text: body.text,
+			adminResponse: helpUser.admin,
+			user: {
+				connect: {
+					email: u.email,
+				},
+			},
+			ticket: {
+				connect: {
+					id: body.ticketId,
+				},
+			},
+		},
+	});
+	console.log('message', message)
+
+	return message;
+}

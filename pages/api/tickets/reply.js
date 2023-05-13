@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
-import { getTicket } from '../../../db';
+import { sendMessage } from '../../../db';
 
-export default async function messages(req, res) {
+export default async function reply(req, res) {
 	try {
 		if (!req.cookies.token) return res.status(401).json({ error: 'Unauthorized' });
 
@@ -9,10 +9,11 @@ export default async function messages(req, res) {
 		let token = req.cookies.token;
 		let user = jwt.verify(token, process.env.JWT_SECRET);
 
-		// Post reply
-		const ticket = await getTicket(user, req.body);
+		// Get messages
+		console.log('req.body', req.body);
+		const message = await sendMessage(user, req.body);
 
-		res.status(200).json({ticket:ticket });
+		res.status(200).json({message:message });
 	} catch (error) {
 		console.error('error', error);
 		res.status(500).json({ error: 'Internal Server Error' });
