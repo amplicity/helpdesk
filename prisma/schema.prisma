@@ -39,4 +39,5 @@ model Message {
   updatedAt DateTime @updatedAt
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
+  adminResponse Boolean @default(false)
 }
