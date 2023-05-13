@@ -1,5 +1,4 @@
 import { Fragment, useEffect, useState, useContext } from 'react'
-import ReactModal from 'react-modal'
 import { Dialog, Menu, Transition } from '@headlessui/react'
 import {
 	BellIcon,
@@ -16,12 +15,12 @@ import {
 	TicketIcon,
 } from '@heroicons/react/outline'
 import { SearchIcon } from '@heroicons/react/solid'
-import UserContext from '../contexts/UserContext';
+import UserContext from '../../contexts/UserContext';
 import { Magic } from 'magic-sdk';
 import { useRouter } from 'next/router';
-import CreateTicket from '../components/CreateTicket';
+import CreateTicket from '../../components/CreateTicket';
 
-export default function Dashboard() {
+export default function DashboardLayout({children}) {
 	const [create, setCreate] = useState(false);
 	const navigation = [
 		{ name: 'My Tickets', href: '#', onClick:() => setCreate(false), icon: TicketIcon, current: !create },
@@ -38,13 +37,9 @@ export default function Dashboard() {
 	]
 	const userContext = useContext(UserContext);
 	const [sidebarOpen, setSidebarOpen] = useState(false)
-	const [namespaces, setNamespaces] = useState([]);
 	const [helpUser, setHelpUser] = useState({
 		tickets: [],
 	});
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [namespaceName, setNamespaceName] = useState('');
-	const [files, setFiles] = useState([]);
 	const router = useRouter();
 
 	// TODO: move to AuthService
@@ -68,6 +63,7 @@ export default function Dashboard() {
 			<div>
 				<Transition.Root show={sidebarOpen} as={Fragment}>
 					<Dialog as="div" className="fixed inset-0 flex z-40 md:hidden" onClose={setSidebarOpen}>
+						sidebr
 						<Transition.Child
 							as={Fragment}
 							enter="transition-opacity ease-linear duration-300"
@@ -261,8 +257,7 @@ export default function Dashboard() {
 					</div>
 
 					<main className="flex-1 min-h-screen">
-						{create && <CreateTicket />}
-						{/* {!create && <Tickets />} */}
+						{children}
 							
 					</main>
 				</div>
