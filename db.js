@@ -10,14 +10,22 @@ if (process.env.NODE_ENV === "production") {
 	prisma = global.prisma;
 }
 
+export async function updateUser(u, body) {
+	let isAdmin;
+	let name;
 
-
-
-export async function updateUser(phone) {
-	const data = {};
+	if (body) {
+		body = JSON.parse(body);
+		isAdmin = body.isAdmin;
+		name = body.name;
+	}
+	const data = {
+		admin: isAdmin,
+		name: name,
+	};
 
 	const user = await prisma.user.update({
-		where: { phone: phone },
+		where: { email: u.email },
 		data: data,
 	});
 
