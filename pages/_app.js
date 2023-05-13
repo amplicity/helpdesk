@@ -61,16 +61,16 @@ function App({ Component, pageProps }) {
 					<div className="bg-white">
 
 						{toast.visible &&
-							<div id="toast-simple" className="flex items-center w-full max-w-xs p-4 space-x-4 text-gray-500 bg-white divide-x divide-gray-200 rounded-lg shadow dark:text-gray-400 dark:divide-gray-700 space-x dark:bg-gray-800  absolute right-4 top-4" role="alert">
+							<div id="toast-simple" className="flex items-center w-full max-w-xs p-4 space-x-4 text-gray-500 bg-white divide-x divide-gray-200 rounded-lg shadow    absolute right-4 top-4" role="alert">
 								<div className="pl-4 text-sm font-normal">{toast.message}</div>
 							</div>
 						}
 						{(pathName == '/' || pathName == '/login') &&
 							<div className="absolute inset-0 flex items-center justify-center">
 								<div className="absolute inset-0 flex items-center justify-center">
-									<div className="absolute w-[40rem] h-[40rem] bg-indigo-100 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob dark:bg-indigo-300"></div>
+									<div className="absolute w-[40rem] h-[40rem] bg-indigo-100 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob "></div>
 									<div
-										className="absolute w-[40rem] h-[40rem] bg-indigo-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob dark:bg-gray-300"
+										className="absolute w-[40rem] h-[40rem] bg-indigo-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob "
 										style={animationDelay2}
 									></div>
 								</div>

@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useRouter } from 'next/router';
 import DashboardLayout from '../../components/DashboardLayout';
+import UserContext from '../../contexts/UserContext';
 
 export default function Create() {
 	const router = useRouter();
+	const userContext = useContext(UserContext);
 
 	const handleTicketOnSubmit = async (event) => {
 		event.preventDefault();
@@ -25,6 +27,13 @@ export default function Create() {
 
 			const result = await response.json();
 			console.log('📧 Send email to admins. Ticket created:', result);
+			const updatedTickets = [...userContext.helpUser.tickets, result.ticket];			
+			const updatedUser = {
+			  ...userContext.helpUser,
+			  tickets: updatedTickets,
+			};
+			userContext.setHelpUser(updatedUser);
+			
 			router.push('/dashboard')
 
 		} catch (error) {

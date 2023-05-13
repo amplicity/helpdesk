@@ -31,7 +31,6 @@ export async function createTicket(u, body) {
 		user: { connect: { email: u.email } },
 		status: newTicketStatus
 	};
-	console.log('data', data);
 
 	const ticket = await prisma.ticket.create({
 		data: data,
@@ -47,8 +46,6 @@ export async function createMessage(u, ticketId, body) {
 		ticket: { connect: { id: ticketId } }, // Connect the message with a ticket
 		user: { connect: { email: u.email } }, // Connect the message with a user
 	};
-	console.log('dataaa', data);
-
 
 	const message = await prisma.message.create({
 		data: data,

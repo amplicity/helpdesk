@@ -37,7 +37,6 @@ function Login(props) {
 			let data = await response.json();
 			userContext.setUser(data.user);
 			userContext.setHelpUser(data.helpUser)
-			console.log('data', data);
 			router.push('/dashboard');
 		}
 	}
