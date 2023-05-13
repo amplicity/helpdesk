@@ -17,7 +17,7 @@ export default async function create(req, res) {
 		const createdMessage = await createMessage(user, createdTicket.id, req.body);
 
 		// Return updated user data
-		res.status(200).json({ createdMessage });
+		res.status(200).json({ message:createdMessage, ticket:createdTicket });
 	} catch (error) {
 		console.error('error', error);
 		res.status(500).json({ error: 'Internal Server Error' });

@@ -24,7 +24,7 @@ export default function Create() {
 			}
 
 			const result = await response.json();
-			console.log('Ticket created:', result);
+			console.log('📧 Send email to admins. Ticket created:', result);
 			router.push('/dashboard')
 
 		} catch (error) {
