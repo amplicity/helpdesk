@@ -8,11 +8,10 @@ import {
 	HomeIcon,
 	InboxIcon,
 	MenuAlt2Icon,
-	UploadIcon,
-	UsersIcon,
 	XIcon,
 	PlusIcon,
 	TicketIcon,
+	CogIcon
 } from '@heroicons/react/outline'
 import { SearchIcon } from '@heroicons/react/solid'
 import UserContext from '../contexts/UserContext';
@@ -21,10 +20,16 @@ import { useRouter } from 'next/router';
 
 export default function DashboardLayout({ children }) {
 	const router = useRouter();
+	const userContext = useContext(UserContext);
 
 	useEffect(() => {
 		if (router.pathname === '/dashboard') {
-			setCurrent(0);
+			if ((userContext.helpUser.name == '' || userContext.helpUser.name == null) && userContext.helpUser.id) {
+				setCurrent(3);
+				router.push('/dashboard/settings');
+			} else {
+				setCurrent(0);
+			}
 		} else if (router.pathname === '/dashboard/create') {
 			setCurrent(1);
 		} else if (router.pathname === '/dashboard/settings') {
@@ -32,12 +37,13 @@ export default function DashboardLayout({ children }) {
 		} else {
 			setCurrent(null);
 		}
-	}, [router.pathname]);
+	}, [router, router.pathname, userContext.helpUser]);
+
 	const [current, setCurrent] = useState(0);
 	const navigation = [
 		{ name: 'My Tickets', onClick: () => router.push('/dashboard'), icon: TicketIcon, current: current === 0 },
 		{ name: 'Create Ticket', onClick: () => router.push('/dashboard/create'), icon: PlusIcon, current: current === 1 },
-		{ name: 'Settings', onClick: () => router.push('/dashboard/settings'), icon: PlusIcon, current: current === 3 },
+		{ name: 'Settings', onClick: () => router.push('/dashboard/settings'), icon: CogIcon, current: current === 3 },
 	]
 
 	function classNames(...classes) {
@@ -47,7 +53,6 @@ export default function DashboardLayout({ children }) {
 	const userNavigation = [
 		{ name: 'Sign out', href: '#', onClick: () => { logout() } },
 	]
-	const userContext = useContext(UserContext);
 	const [sidebarOpen, setSidebarOpen] = useState(false)
 	const [helpUser, setHelpUser] = useState({
 		tickets: [],
