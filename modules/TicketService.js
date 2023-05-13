@@ -23,6 +23,10 @@ const TicketService = {
 		  
 			return `${month}/${day}/${year} ${formattedHours}:${minutes}${ampm}`;
 	},
+	isAdmin: function(helpUser) {
+		if (helpUser === undefined) return false;
+		return helpUser.admin === true;
+	}
 };
 
 export default TicketService;

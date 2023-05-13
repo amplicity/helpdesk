@@ -29,8 +29,8 @@ function Login(props) {
 				Authorization: 'Bearer ' + didToken,
 			},
 			body: JSON.stringify({
-				isAdmin: isAdmin,
-				name: name
+				// isAdmin: isAdmin,
+				// name: name
 			})
 		});
 		if (response.ok) {
@@ -70,7 +70,7 @@ function Login(props) {
 
 				<input onChange={handleEmailOnChange} type="email" name="email" required="required" placeholder="my@email.com" className="rounded-xl w-full p-4" />
 				
-				<div className="text-left text-xl mt-4">Enter your name:</div>
+				{/* <div className="text-left text-xl mt-4">Enter your name:</div>
 
 				<input onChange={handleNameOnChange} type="text" name="name" required="required" placeholder="Mae Brown" className="rounded-xl w-full p-4" />
 				<div className="mt-4 text-left">
@@ -79,7 +79,7 @@ function Login(props) {
 						<option value="user">User</option>
 						<option value="admin">Admin</option>
 					</select>
-				</div>
+				</div> */}
 				<div className={`text-center relative mt-8`}>
 					<button type="submit" disabled={submitDisabled()} className={` z-90 bg-slate-500 text-white font-bold py-2 px-4 rounded`}>
 						{!formSubmitted &&

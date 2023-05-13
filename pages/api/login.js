@@ -29,7 +29,7 @@ export default async function login(req, res) {
     );
 
     setTokenCookie(res, token);
-    let helpUser = await getOrCreateUserByEmail(user, req.body)
+    let helpUser = await getOrCreateUserByEmail(user)
     res.status(200).send({ user: user, helpUser: helpUser });
   } catch (error) {
     console.log(error);

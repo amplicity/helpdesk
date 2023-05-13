@@ -13,6 +13,9 @@ export default function TicketMessages() {
 	const [ticket, setTicket] = useState({
 		id: undefined,
 		messages: [],
+		user: {
+			email: '',
+		},
 	});
 	const [text, setText] = useState('');
 
@@ -40,11 +43,6 @@ export default function TicketMessages() {
 
 		fetchMessages();
 	}, [router.query.id]);
-
-	const isAdmin = () => {
-		if (userContext.helpUser === undefined) return false;
-		return userContext.helpUser.admin === true;
-	}
 
 	const handleTextOnChange = (e) => {
 
@@ -80,16 +78,22 @@ export default function TicketMessages() {
 		<DashboardLayout>
 			<div className="py-6">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-					<h1 className="text-2xl font-semibold text-gray-900 mb-4">Ticket {ticket.id} - {ticket.description} </h1>
+					<div className="mb-4">
+						<h1 className="text-2xl font-semibold text-gray-900">Ticket {ticket.id} - {ticket.description} </h1>
+						<h2 className="text-xl text-gray-900">{ticket.user.email}</h2>
+						<h2 className="text-xl text-gray-900">{ticket.user.name}</h2>
+
+					</div>
+
 					<div className="w-full">
 						<div className=" h-[30rem] max-h-[30rem] overflow-y-auto">
 							{ticket.messages.map((message, index) => (
-								<div key={index} className={`chat ${(!isAdmin() && message.adminResponse) || (isAdmin() && !message.adminResponse) ? 'chat-start' : 'chat-end'}`}>
+								<div key={index} className={`chat ${(!TicketService.isAdmin() && message.adminResponse) || (TicketService.isAdmin() && !message.adminResponse) ? 'chat-start' : 'chat-end'}`}>
 									<div className="chat-header">
-										{isAdmin() && message.adminResponse && <div className="chat-header-name text-slate-500">You</div>}
-										{!isAdmin() && message.adminResponse && <div className="chat-header-name text-slate-500">Support</div>}
-										{isAdmin() && message.adminResponse === false && <div className="chat-header-name text-slate-500">{ticket.user.email}</div>}
-										{!isAdmin() && message.adminResponse === false && <div className="chat-header-name text-slate-500">You</div>}
+										{TicketService.isAdmin() && message.adminResponse && <div className="chat-header-name text-slate-500">Support</div>}
+										{!TicketService.isAdmin() && message.adminResponse && <div className="chat-header-name text-slate-500">Support</div>}
+										{TicketService.isAdmin() && message.adminResponse === false && <div className="chat-header-name text-slate-500">{ticket.user.email}</div>}
+										{!TicketService.isAdmin() && message.adminResponse === false && <div className="chat-header-name text-slate-500">You</div>}
 										<time className="text-sm opacity-50 text-slate-400">{DayJs(message.createdAt).format('MM/DD/YYYY h:mma')}</time>
 									</div>
 									<div className="chat-bubble">{message.text}</div>

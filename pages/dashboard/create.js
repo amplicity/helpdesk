@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import DashboardLayout from '../../components/DashboardLayout';
 import UserContext from '../../contexts/UserContext';
@@ -6,6 +6,12 @@ import UserContext from '../../contexts/UserContext';
 export default function Create() {
 	const router = useRouter();
 	const userContext = useContext(UserContext);
+
+	useEffect(() => {
+		if (!userContext.helpUser.name) {
+			router.push('/dashboard/settings');
+		}
+	}, [router, userContext.helpUser]);
 
 	const handleTicketOnSubmit = async (event) => {
 		event.preventDefault();
