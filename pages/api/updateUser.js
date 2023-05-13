@@ -13,7 +13,6 @@ export default async function update(req, res) {
 		// Update user's information
 		const updatedData = req.body;
 		const updatedUser = await updateUser(user, updatedData);
-		console.log('heres the updated user', updatedUser)
 		// Return updated user data
 		res.status(200).json({ updatedUser });
 	} catch (error) {

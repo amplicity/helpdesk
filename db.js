@@ -111,7 +111,7 @@ export async function getTicket(u, body) {
 				},
 				{
 					user: {
-						admin: true,
+						admin: u.admin === true,
 					},
 				},
 			],
@@ -200,4 +200,20 @@ export async function sendMessage(u, body) {
 	console.log('message', message)
 
 	return message;
+}
+
+export async function updateTicket(u, body){
+	if (body && typeof body === 'string') {
+		body = JSON.parse(body);
+	}
+	const ticket = await prisma.ticket.update({
+		where: {
+			id: body.ticketId,
+		},
+		data: {
+			status: parseInt(body.status),
+		},
+	});
+
+	return ticket;
 }
