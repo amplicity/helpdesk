@@ -13,7 +13,6 @@ export default function Tickets() {
 		if (!userContext.helpUser.name) {
 			router.push('/dashboard/settings');
 		}
-		console.log('helpUser', userContext.helpUser)
 		if (userContext.helpUser.tickets) {
 			if(userContext.helpUser.tickets.length < 1){
 				router.push('/dashboard/create');

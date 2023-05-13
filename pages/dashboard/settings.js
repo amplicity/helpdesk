@@ -18,12 +18,12 @@ export default function Settings() {
 	}, [userContext.helpUser]);
 
 	const handleNameOnChange = (e) => {
-		setName(e.target.value);
+		setName(e.target.value || '');
 	}
 
 
 	const handleRoleOnChange = (e) => {
-		setIsAdmin(e.target.checked);
+		setIsAdmin(e.target.checked || false);
 	};
 
 	const submitDisabled = () => {
@@ -48,7 +48,6 @@ export default function Settings() {
 				tickets: data.updatedUser.tickets
 			};
 			userContext.setHelpUser(updatedUser);
-			console.log('updatedUser', updatedUser);
 			router.push('/dashboard');
 		}
 

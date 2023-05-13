@@ -39,8 +39,6 @@ export default function TicketMessages() {
 					const data = await response.json();
 					setTicket(data.ticket);
 					setStatus(data.ticket.status || 0);
-					console.log('data.ticket', data);
-
 				}
 			}
 		}
@@ -94,6 +92,12 @@ export default function TicketMessages() {
 					messages: [...prevTicket.messages, data.message],
 				}));
 				setText('');
+				if (TicketService.isAdmin(userContext.helpUser)) {
+					console.log(`📧 Send email to ${ticket.user.email} for reply made to ticket id: ${ticket.id}` )
+				}
+				if (!TicketService.isAdmin(userContext.helpUser)){
+					console.log(`📧 Send email to support admins for reply made to ticket id: ${ticket.id}` )
+				}
 			}
 		}
 	};

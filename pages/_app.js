@@ -36,7 +36,6 @@ function App({ Component, pageProps }) {
 					router.push('/');
 				}
 				if (responseData.user) {
-					console.log('responseData', responseData);
 					if (router.pathname == '/') {
 						router.push('/dashboard');
 					}
