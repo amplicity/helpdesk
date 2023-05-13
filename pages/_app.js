@@ -77,9 +77,10 @@ function App({ Component, pageProps }) {
 								<Component {...pageProps} />
 							</div>
 						}
-						{pathName == '/dashboard' &&
+						{pathName != '/' && pathName != '/login' &&
 							<Component {...pageProps} />
 						}
+						
 
 					</div>
 				</ToastContext.Provider>
