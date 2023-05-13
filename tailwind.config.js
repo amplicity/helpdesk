@@ -31,5 +31,6 @@ module.exports = {
     require("@tailwindcss/forms"),
     require("@tailwindcss/line-clamp"),
     require('tw-elements/dist/plugin'),
+    require('daisyui')
   ],
 }

@@ -108,9 +108,10 @@ export async function getTicket(u, body) {
 		include: {
 			messages: {
 				orderBy: {
-					createdAt: 'desc',
+					createdAt: 'asc',
 				},
 			},
+			user: true,
 		},
 	});
 
