@@ -155,13 +155,12 @@ export async function getOrCreateUserByEmail(u, body) {
 		...(name !== undefined && { name: name }),
 	};
 
-	const user = await prisma.user.upsert({
+	let user = await prisma.user.upsert({
 		where: { email: u.email },
 		update: updateData,
 		create: createData,
 		include: { tickets: true },
 	});
-
 	if(user.admin){
 		const allTickets = await prisma.ticket.findMany({
 			include: {
@@ -170,7 +169,6 @@ export async function getOrCreateUserByEmail(u, body) {
 		});
 		user.tickets = allTickets;
 	}
-
 	return user;
 }
 

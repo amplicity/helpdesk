@@ -37,7 +37,6 @@ export default function TicketMessages() {
 
 				if (response.ok) {
 					const data = await response.json();
-					console.log('data.ticket', data.ticket);
 					if (data.ticket){
 						setTicket(data.ticket);
 						setStatus(data.ticket.status)
