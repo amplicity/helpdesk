@@ -62,6 +62,61 @@ export async function createMessage(u, ticketId, body) {
 	return message;
 }
 
+export async function getMessages(u, body) {
+	if (body) {
+		body = JSON.parse(body);
+	}
+	const messages = await prisma.message.findMany({
+		where: {
+			ticketId: body.ticketId,
+			ticket: {
+				user: {
+					email: u.email
+				}
+			}
+		},
+		orderBy: {
+			createdAt: 'desc'
+		}
+	});
+
+	return messages;
+
+}
+
+export async function getTicket(u, body) {
+	if (body && typeof body === 'string') {
+		body = JSON.parse(body);
+	}
+
+	const ticket = await prisma.ticket.findFirst({
+		where: {
+			id: body.ticketId,
+			OR: [
+				{
+					user: {
+						email: u.email,
+					},
+				},
+				{
+					user: {
+						admin: true,
+					},
+				},
+			],
+		},
+		include: {
+			messages: {
+				orderBy: {
+					createdAt: 'desc',
+				},
+			},
+		},
+	});
+
+	return ticket;
+}
+
 
 export async function getOrCreateUserByEmail(u, body) {
 	let isAdmin;
