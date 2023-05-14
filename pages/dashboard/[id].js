@@ -147,28 +147,25 @@ export default function TicketMessages() {
 								))}
 							</div>
 							<form onSubmit={submitText}>
-								<div  className="fixed bottom-0 bg-white w-full p-4 flex items-end">
-									<input
-										onChange={handleTextOnChange}
-										value={text || ''}
-										type="text"
-										name="text"
-										required="required"
-										placeholder="Reply here..."
-										className="rounded-xl p-4 mt-4 mb-4 w-[90%] sm:w-[65%]"
-									/>
-									{text.length > 0 && (
-										<button type="submit" className="h-14 text-3xl text-slate-200 ml-[-3rem] mb-4">
-											<FontAwesomeIcon icon={faCircleArrowUp} />
-										</button>
-									)}
+								<div className="fixed bottom-0 bg-white w-full p-4 flex items-end">
+									<div className="relative w-[90%] sm:w-[65%]">
+										<input
+											onChange={handleTextOnChange}
+											value={text || ''}
+											type="text"
+											name="text"
+											required="required"
+											placeholder="Reply here..."
+											className="rounded-xl p-4 mt-4 mb-4 w-full"
+										/>
+										{text.length > 0 && (
+											<button type="submit" style={{ position: 'absolute', right: '1rem', bottom: '1rem' }} className="h-14 text-3xl text-slate-200">
+												<FontAwesomeIcon icon={faCircleArrowUp} className=" h-8 text-3xl" />
+											</button>
+										)}
+									</div>
 								</div>
 							</form>
-
-
-
-
-
 
 						</div>
 					</div>
