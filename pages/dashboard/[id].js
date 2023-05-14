@@ -131,7 +131,7 @@ export default function TicketMessages() {
 
 						</div>
 
-						<div className="w-full h-full">
+						<div className="w-full h-full bg-white">
 							<div className="h-full overflow-y-auto mb-32">
 								{ticket.messages.map((message, index) => (
 									<div key={index} className={`chat ${(!TicketService.isAdmin(userContext.helpUser) && message.adminResponse) || (TicketService.isAdmin(userContext.helpUser) && !message.adminResponse) ? 'chat-start' : 'chat-end'}`}>
