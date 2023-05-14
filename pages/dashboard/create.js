@@ -12,20 +12,6 @@ export default function Create() {
 			router.push('/dashboard/settings');
 		}
 	}, [router, userContext.helpUser]);
-	useEffect(() => {
-		const button = document.getElementById("submit-button");
-		const handleTouchEnd = async (e) => {
-			e.preventDefault();
-			await handleTicketOnSubmit(e);
-		};
-		handleTouchEnd();
-
-		button.addEventListener("touchend", handleTouchEnd);
-
-		return () => {
-			button.removeEventListener("touchend", handleTouchEnd);
-		};
-	}, []);
 
 	const handleTicketOnSubmit = async (event) => {
 		event.preventDefault();
@@ -47,13 +33,13 @@ export default function Create() {
 
 			const result = await response.json();
 			console.log('📧 Send email to admins. Ticket created:', result);
-			const updatedTickets = [...userContext.helpUser.tickets, result.ticket];
+			const updatedTickets = [...userContext.helpUser.tickets, result.ticket];			
 			const updatedUser = {
-				...userContext.helpUser,
-				tickets: updatedTickets,
+			  ...userContext.helpUser,
+			  tickets: updatedTickets,
 			};
 			userContext.setHelpUser(updatedUser);
-
+			
 			router.push('/dashboard')
 
 		} catch (error) {
@@ -92,7 +78,7 @@ export default function Create() {
 									className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 								></textarea>
 							</div>
-							<button id="submit-button" type="submit" className={` mt-4 z-90 text-white font-bold py-2 px-4 bg-slate-500 rounded hover:cursor-pointer`}>
+							<button type="submit" className={` mt-4 z-90 text-white font-bold py-2 px-4 bg-slate-500 rounded hover:cursor-pointer`}>
 								Create Ticket
 							</button>
 						</form>
