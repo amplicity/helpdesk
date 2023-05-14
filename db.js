@@ -28,11 +28,11 @@ export async function updateUser(u, body) {
 	const user = await prisma.user.update({
 		where: { email: u.email },
 		data: data,
-		include : {
+		include: {
 			tickets: true
 		}
 	});
-	if(user.admin){
+	if (user.admin) {
 		const allTickets = await prisma.ticket.findMany({
 			include: {
 				user: true
@@ -101,33 +101,48 @@ export async function getTicket(u, body) {
 		body = JSON.parse(body);
 	}
 
-	const ticket = await prisma.ticket.findFirst({
+	const user = await prisma.user.findFirst({
 		where: {
-			id: body.ticketId,
-			OR: [
-				{
-					user: {
-						email: u.email,
-					},
-				},
-				{
-					user: {
-						admin: u.admin === true,
-					},
-				},
-			],
-		},
-		include: {
-			messages: {
-				orderBy: {
-					createdAt: 'asc',
-				},
-			},
-			user: true,
+			email: u.email,
 		},
 	});
 
-	return ticket;
+	if (!user.admin) {
+		const ticket = await prisma.ticket.findFirst({
+			where: {
+				id: body.ticketId,
+				user: {
+					email: u.email,
+				},
+			},
+			include: {
+				messages: {
+					orderBy: {
+						createdAt: 'asc',
+					},
+				},
+				user: true,
+			},
+		});
+		return ticket;
+	} else {
+		const ticket = await prisma.ticket.findFirst({
+			where: {
+				id: body.ticketId,
+			},
+			include: {
+				messages: {
+					orderBy: {
+						createdAt: 'asc',
+					},
+				},
+				user: true,
+			},
+		});
+		return ticket;
+	}
+
+
 }
 
 
@@ -162,7 +177,7 @@ export async function getOrCreateUserByEmail(u, body) {
 		create: createData,
 		include: { tickets: true },
 	});
-	if(user.admin){
+	if (user.admin) {
 		const allTickets = await prisma.ticket.findMany({
 			include: {
 				user: true
@@ -202,7 +217,7 @@ export async function sendMessage(u, body) {
 	return message;
 }
 
-export async function updateTicket(u, body){
+export async function updateTicket(u, body) {
 	if (body && typeof body === 'string') {
 		body = JSON.parse(body);
 	}

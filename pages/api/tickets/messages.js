@@ -11,8 +11,11 @@ export default async function messages(req, res) {
 
 		// Post reply
 		const ticket = await getTicket(user, req.body);
-
-		res.status(200).json({ticket:ticket });
+		if (ticket){
+			res.status(200).json({ticket:ticket });
+		} else {
+			return res.status(401).json({ error: 'Unauthorized' });
+		}
 	} catch (error) {
 		console.error('error', error);
 		res.status(500).json({ error: 'Internal Server Error' });
