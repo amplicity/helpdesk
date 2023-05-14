@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import DashboardLayout from '../../components/DashboardLayout';
 import UserContext from '../../contexts/UserContext';
@@ -6,6 +6,8 @@ import UserContext from '../../contexts/UserContext';
 export default function Create() {
 	const router = useRouter();
 	const userContext = useContext(UserContext);
+	const [text, setText] = useState('');
+	const [description, setDescription] = useState('');
 
 	useEffect(() => {
 		if (!userContext.helpUser.name) {
@@ -13,11 +15,8 @@ export default function Create() {
 		}
 	}, [router, userContext.helpUser]);
 
-	const handleTicketOnSubmit = async (event) => {
-		event.preventDefault();
-		const form = event.target.closest("form");
-		const description = form.description.value;
-		const text = form.text.value;
+	const handleTicketOnSubmit = async (e) => {
+		e.preventDefault();
 		const ticket = { description, text };
 		try {
 			const response = await fetch('/api/tickets/create', {
@@ -47,6 +46,13 @@ export default function Create() {
 			console.error('Error:', error);
 		}
 	};
+	const handleTextOnChange = (e) => {
+		setText(e.target.value);
+	}
+
+	const handleDescriptionOnChange = (e) => {
+		setDescription(e.target.value);
+	}
 
 	return (
 		<DashboardLayout>
@@ -65,6 +71,7 @@ export default function Create() {
 									type="text"
 									name="description"
 									id="description"
+									onChange={handleDescriptionOnChange}
 									className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 								/>
 							</div>
@@ -76,10 +83,11 @@ export default function Create() {
 									name="text"
 									id="text"
 									rows="3"
+									onChange={handleTextOnChange}
 									className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 								></textarea>
 							</div>
-							<button name="submit" onClick={handleTicketOnSubmit} className={` mt-4 z-90 text-white font-bold py-2 px-4 bg-slate-500 rounded hover:cursor-pointer`} >
+							<button onClick={handleTicketOnSubmit} disabled={description == '' || text == '' || text == undefined || description == undefined} className={` mt-4 text-white font-bold py-2 px-4 bg-slate-500 rounded hover:cursor-pointer`} >
 								Create Ticket
 							</button>
 
