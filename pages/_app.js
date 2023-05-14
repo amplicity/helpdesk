@@ -51,6 +51,7 @@ function App({ Component, pageProps }) {
 		<>
 			<Head>
 				<title>My Helpdesk - Get Help Fast!</title>
+				<link rel="shortcut icon" href="/favicon.ico" />
 			</Head>
 			<UserContext.Provider value={userContextProvider}>
 				<ToastContext.Provider value={toastContextProvider}>
