@@ -115,7 +115,7 @@ export default function TicketMessages() {
 							<h2 className="text-xl text-gray-900">{ticket.user.name}</h2>
 							<h2 className="text-xl text-gray-900">{ticket.user.email}</h2>
 							{TicketService.isAdmin(userContext.helpUser) && (
-								<select id="status" value={status || 0} onChange={handleStatusOnChange} className="rounded-xl p-2 w-24" disabled={!TicketService.isAdmin(userContext.helpUser)}>
+								<select id="status" value={status || 0} onChange={handleStatusOnChange} className="rounded-xl p-2 w-32" disabled={!TicketService.isAdmin(userContext.helpUser)}>
 									<option value="0">New</option>
 									<option value="1">In Progress</option>
 									<option value="2">Resolved</option>
