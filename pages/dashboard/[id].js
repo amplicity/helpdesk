@@ -59,7 +59,7 @@ export default function TicketMessages() {
 			...prevHelpUser,
 			tickets: updatedTickets,
 		}));
-		
+
 		const response = await fetch('/api/tickets/update', {
 			method: 'POST',
 			headers: {
@@ -70,7 +70,7 @@ export default function TicketMessages() {
 				ticketId: ticket.id
 			}),
 		});
-		console.log(`📧 Send email to ${ticket.user.email} about ticket id ${ticket.id}, the status was updatd to ${TicketService.getStatus(parseInt(e.target.value))}` )
+		console.log(`📧 Send email to ${ticket.user.email} about ticket id ${ticket.id}, the status was updatd to ${TicketService.getStatus(parseInt(e.target.value))}`)
 
 	}
 
@@ -96,10 +96,10 @@ export default function TicketMessages() {
 				}));
 				setText('');
 				if (TicketService.isAdmin(userContext.helpUser)) {
-					console.log(`📧 Send email to ${ticket.user.email} for reply made to ticket id: ${ticket.id} - ${data.message.text}` )
+					console.log(`📧 Send email to ${ticket.user.email} for reply made to ticket id: ${ticket.id} - ${data.message.text}`)
 				}
-				if (!TicketService.isAdmin(userContext.helpUser)){
-					console.log(`📧 Send email to support admins for reply made to ticket id: ${ticket.id} - ${data.message.text}` )
+				if (!TicketService.isAdmin(userContext.helpUser)) {
+					console.log(`📧 Send email to support admins for reply made to ticket id: ${ticket.id} - ${data.message.text}`)
 				}
 			}
 		}
@@ -131,8 +131,8 @@ export default function TicketMessages() {
 
 						</div>
 
-						<div className="w-full">
-							<div className="h-full ">
+						<div className="w-full h-full">
+							<div className="h-full overflow-y-auto mb-32">
 								{ticket.messages.map((message, index) => (
 									<div key={index} className={`chat ${(!TicketService.isAdmin(userContext.helpUser) && message.adminResponse) || (TicketService.isAdmin(userContext.helpUser) && !message.adminResponse) ? 'chat-start' : 'chat-end'}`}>
 										<div className="chat-header">
@@ -147,9 +147,7 @@ export default function TicketMessages() {
 								))}
 							</div>
 							<form onSubmit={submitText}>
-								<div className="relative">
-
-
+								<div  className="fixed bottom-0 bg-white w-full p-4 flex items-end">
 									<input
 										onChange={handleTextOnChange}
 										value={text || ''}
@@ -157,15 +155,20 @@ export default function TicketMessages() {
 										name="text"
 										required="required"
 										placeholder="Reply here..."
-										className="rounded-xl w-full p-4 mt-4 mb-4" />
+										className="rounded-xl p-4 mt-4 mb-4 w-[90%] sm:w-[65%]"
+									/>
 									{text.length > 0 && (
-										<button type="submit" className="absolute right-4 top-4 h-14 text-3xl text-slate-200">
+										<button type="submit" className="h-14 text-3xl text-slate-200 ml-[-3rem] mb-4">
 											<FontAwesomeIcon icon={faCircleArrowUp} />
 										</button>
 									)}
 								</div>
-
 							</form>
+
+
+
+
+
 
 						</div>
 					</div>

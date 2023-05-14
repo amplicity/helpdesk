@@ -11,8 +11,9 @@ NEXT_PUBLIC_MAGIC_PUBLIC_KEY
 MAGIC_SECRET_KEY
 JWT_SECRET
 SESSION_LENGTH_IN_DAYS
-DATABASE_URL
 ```
+
+Note, due to prisma being unaware of `.env.local`, you must create a `.env` with `DATABASE_URL` and `NODE_ENV`, which can be set to `development` or `production`.
 
 3. Run the development server
 ```

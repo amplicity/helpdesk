@@ -60,7 +60,7 @@ export default function DashboardLayout({ children }) {
 
 	return (
 		<>
-			<div>
+			<div className="grid grid-cols-dashboard-layout h-screen">
 				<Transition.Root show={sidebarOpen} as={Fragment}>
 					<Dialog as="div" className="fixed inset-0 flex z-40 md:hidden" onClose={setSidebarOpen}>
 						<Transition.Child
