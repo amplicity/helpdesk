@@ -87,7 +87,7 @@ export default function Create() {
 									className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 								></textarea>
 							</div>
-							<button onClick={handleTicketOnSubmit} disabled={description == '' || text == '' || text == undefined || description == undefined} className={` mt-4 text-white font-bold py-2 px-4 bg-slate-500 rounded hover:cursor-pointer`} >
+							<button onClick={handleTicketOnSubmit} disabled={description == '' || text == '' || text == undefined || description == undefined}  className={`mt-4 z-50 text-white font-bold py-2 px-4 bg-slate-500 rounded hover:cursor-pointer`} >
 								Create Ticket
 							</button>
 
