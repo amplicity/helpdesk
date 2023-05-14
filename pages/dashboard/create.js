@@ -55,7 +55,7 @@ export default function Create() {
 				</div>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
 					<div className="flex flex-col ">
-						<form onSubmit={handleTicketOnSubmit}>
+						<form onSubmit={handleTicketOnSubmit} action="#">
 							<div className="mt-4">
 								<label htmlFor="description" className="block text-sm font-medium text-gray-700">
 									Subject
@@ -78,9 +78,8 @@ export default function Create() {
 									className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 								></textarea>
 							</div>
-							<button type="submit" className={` mt-4 z-90 text-white font-bold py-2 px-4 bg-slate-500 rounded hover:cursor-pointer`}>
-								Create Ticket
-							</button>
+							<input value="Create Ticket" name="submit" type="submit" className={` mt-4 z-90 text-white font-bold py-2 px-4 bg-slate-500 rounded hover:cursor-pointer`} />
+
 						</form>
 					</div>
 				</div>
