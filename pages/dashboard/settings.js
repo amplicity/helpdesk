@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import DashboardLayout from '../../components/DashboardLayout';
 import UserContext from '../../contexts/UserContext';
-import TicketService from '../../modules/TicketService';
 
 export default function Settings() {
 	const userContext = useContext(UserContext);
