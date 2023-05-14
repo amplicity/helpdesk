@@ -9,13 +9,10 @@ function Login(props) {
 	const [email, setEmail] = useState('');
 	const userContext = useContext(UserContext);
 	const [formSubmitted, setFormSubmitted] = useState(false);
-	const [isAdmin, setIsAdmin] = useState(false);
-	const [name, setName] = useState('');
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
 		setFormSubmitted(true);
-		console.log('process.env.NEXT_PUBLIC_MAGIC_PUBLIC_KEY', process.env.NEXT_PUBLIC_MAGIC_PUBLIC_KEY)
 
 		let magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLIC_KEY);
 		await magic.auth.loginWithEmailOTP({

@@ -157,7 +157,7 @@ export default function TicketMessages() {
 										name="text"
 										required="required"
 										placeholder="Reply here..."
-										className="rounded-xl w-full p-4 mt-4" />
+										className="rounded-xl w-full p-4 mt-4 mb-4" />
 									{text.length > 0 && (
 										<button type="submit" className="absolute right-4 top-4 h-14 text-3xl text-slate-200">
 											<FontAwesomeIcon icon={faCircleArrowUp} />
