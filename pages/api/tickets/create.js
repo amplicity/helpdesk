@@ -11,7 +11,6 @@ export default async function create(req, res) {
 
 		// Create ticket
 		const createdTicket = await createTicket(user, req.body);
-		console.log('createdTicket', createdTicket);
 
 		// Create first message
 		const createdMessage = await createMessage(user, createdTicket.id, req.body);
