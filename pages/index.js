@@ -17,7 +17,7 @@ export default function Home() {
     <>
       <div className="text-center w-full">
         <div className="text-center">
-          <h1 className="text-8xl">
+          <h1 className="text-6xl sm:text-8xl">
             <span className="text-slate-300">My Helpdesk</span>
           </h1>
           <h2 className="text-2xl opacity-70"></h2>
